@@ -13,7 +13,7 @@ private:
 	float totalprice;
 	
 public:
-	Booking(Customer customer,Room room,string bookingid, string bookingdate, string bookingtime,float totalprice);
+	Booking(Customer customer,Room room,string bookingid, string bookingdate, string bookingtime);
 	string getbookingid();
 	string getbookingdate();
 	string getbookingtime();

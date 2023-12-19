@@ -1,12 +1,12 @@
 #include "Booking.h"
-Booking::Booking(Customer customer, Room room, string bookingid, string bookingdate, string bookingtime,float totalprice)
+Booking::Booking(Customer customer, Room room, string bookingid, string bookingdate, string bookingtime)
 {
 	this->bookingid = bookingid;
 	this->bookingdate = bookingdate;
 	this->bookingtime = bookingtime;
 	this->customer = customer;
 	this->room = room;
-	this->totalprice = totalprice;
+	
 }
 string Booking::getbookingid()
 {
@@ -49,7 +49,6 @@ bool Booking::addamenities(amenities obj)
 		if (obj.getid() == amenitieslist[x].getid())
 		{
 			flag = true;
-			
 			break;
 		}
 	}
