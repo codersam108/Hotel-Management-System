@@ -9,6 +9,7 @@ using namespace std;
 int x;
 vector<Booking>bookinglist;
 vector<Customer>customerlist;
+vector<Customer>reservedcustomers;
 vector<Room>roomlist;
 vector<amenities>amenitieslist;
 int index1, index2;
@@ -89,7 +90,7 @@ void addcustomer()
 			break;
 		}
 	}
-	Customer obj(cn, ci, st);
+	Customer obj(ci, cn, st);
 	customerlist.push_back(obj);
 	cout << "Customer added successfully" << endl;
 }
@@ -447,6 +448,7 @@ void addamenities()
 	}
 	amenities object(amenitiesid, amenitiesname, amenitiesdescription, amenitiesprice);
 	amenitieslist.push_back(object);
+	cout << "Amenity added successfully in the database" << endl;
 }
 void editamenities()
 {
@@ -528,6 +530,7 @@ void editamenities()
 		}
 		amenities object(findid, amenitiesname, amenitiesdescription, amenitiesprice);
 		amenitieslist[idx] = object;
+		cout << "Amenity edited successfully in the database" << endl;
 	}
 }
 void deleteamenities()
@@ -571,37 +574,11 @@ bool checkbookingid(string bid)
 	}
 	return flag;
 }
-bool checkc(string cid)
-{
-	bool flag = false;
-	for (x = 0; x < customerlist.size(); x++)
-	{
-		if (customerlist[x].getcustomerid() == cid)
-		{
-			index1 = x;
-			flag = true;
-			break;
-		}
-	}
-	return flag;
-}
-bool checkroom(string rid)
-{
-	bool flag = false;
-	for (x = 0; x < roomlist.size(); x++)
-	{
-		if (roomlist[x].getroomid() == rid)
-		{
-			index2 = x;
-			flag = true;
-			break;
-		}
-	}
-	return flag;
-}
+
+
 void bookingroom()
 {
-	string cid, rid,bid,bd,bt;
+	string cid, rid, bid, bd, bt;
 	int idx;
 	string ch;
 	while (true)
@@ -652,31 +629,45 @@ void bookingroom()
 	{
 		cout << "Enter the customer id against which u wanna do the booking " << endl;
 		getline(cin, cid);
-		if (cid == "")
+		bool flag = false;
+		
+		for (x = 0; x < customerlist.size(); x++)
 		{
-			cout << "Sorry the customer id u entered cant be blank,pls enter a valid customer id " << endl;
-
+			if (customerlist[x].getcustomerid() == cid)
+			{
+				index1 = x;
+				flag = true;
+				break;
+			}
 		}
-		else if (checkc(cid) == false)
+		if (flag == false)
 		{
-			cout << "Sprry the customer id u entered is not in the database,pls enter a valid customer id " << endl;
+			cout << "Sorry the id u entered is not in the database,pls enter the id again" << endl;
 		}
 		else
 		{
 			break;
 		}
 	}
+
 	while (true)
 	{
+		int idl;
 		cout << "Enter the room id against which u wanna do the booking" << endl;
 		getline(cin, rid);
-		if (rid == "")
+		bool k = false;
+		for (x = 0; x < roomlist.size(); x++)
 		{
-			cout << "Sorry the room id u entered cant be blank,pls enter a valid room id " << endl;
+			if (rid == roomlist[x].getroomid())
+			{
+				k = true;
+				idl = x;
+				break;
+			}
 		}
-		else if (checkroom(rid) == false)
+		if (k == false)
 		{
-			cout << "Sorry the room id u entered is not in the databse,pls enter a valid room id" << endl;
+			cout << "Sorry the id u entered is not in the database,pls enter a valid room id " << endl;
 		}
 		else
 		{
@@ -687,6 +678,7 @@ void bookingroom()
 	bookinglist.push_back(obj);
 	while (true)
 	{
+		string yes;
 		string amenity;
 		cout << "The following number of amenities are available " << endl;
 		cout << "1.Free wifi" << endl;
@@ -703,8 +695,7 @@ void bookingroom()
 		cout << "12.Toasters" << endl;
 		cout << "13.Microwave" << endl;
 		cout << "**********" << endl;
-		while (true)
-		{
+		
 			cout << "Enter the id of the amenitie which u wanna add in the room " << endl;
 			getline(cin, amenity);
 			bool gunda = false;
@@ -717,28 +708,24 @@ void bookingroom()
 					break;
 				}
 			}
-		
+
 			if (gunda == false)
 			{
 				cout << "Sorry the amenity id u entered is not in our database,pls enter the amenity id again" << endl;
 			}
-			
-
 			else
 			{
-				string yes;
+				
 				obj.addamenities(amenitieslist[idx]);
 				cout << "Amenities successfully added in the room" << endl;
-				cout << "Do u want to enter more amenities or exit " << endl;
-				getline(cin, yes);
-				if (yes == "No" || yes == "NO" || yes == "NO")
-				{
-					break;
-				}
-
-			
 			}
-		}
+			cout << "Do u want to add more amenities or not " << endl;
+			getline(cin, yes);
+			if (yes == "NO" || yes == "no" || yes == "No" || yes == "nO")
+			{
+				break;
+			}
+		
 	}
 	while (true)
 	{
@@ -775,26 +762,46 @@ void bookingroom()
 			break;
 		}
 	}
-					
+}
+void showsummary()
+{
+	string id;
+	int idx;
+	cout << "Enter the booking id against which u want the summary" << endl;
+	getline(cin, id);
+	bool flag = false;
+	for (x = 0; x < bookinglist.size(); x++)
+	{
+		if (id == bookinglist[x].getbookingid())
+		{
+			flag = true;
+			idx = x;
+			break;
 
+		}
+	}
+	if (flag == false)
+	{
+		cout << "Sorry the id u entered is not in the database,pls enter a valid booking id" << endl;
+	}
+	else
+	{
 		
-
-
-
+		cout << "The booking date is " << bookinglist[idx].getbookingdate() << endl;
+		cout << "The time of booking was " << bookinglist[idx].getbookingtime() << endl;
+		cout << "The id of the customer which booked the room is " << bookinglist[idx].getcid() << endl;
+		cout << "The id of the room which the customer booked is " << bookinglist[idx].getrid() << endl;
+		bookinglist[idx].totalmoney();
+		cout << "The total fare for the customer is " << bookinglist[idx].gettotalprice() << endl;
 		
-			
-
-	
-
-
-
+	}
 }
 int main()
 {
 	int choice;
 	while (true)
 	{
-		cout << "***** Welcome to Hotel Management System " << endl;
+		cout << "***** Welcome to Hotel Management System******* " << endl;
 		cout << "1.Add Customer in the database" << endl;
 		cout << "2.Add room in the database " << endl;
 		cout << "3.Add Amenities in the database" << endl;
@@ -805,6 +812,7 @@ int main()
 		cout << "8.Delete Room details from the database " << endl;
 		cout << "9.Delete amenities details from the database " << endl;
 		cout << "10.Do booking for the customer" << endl;
+		cout << "11.Display the summary " << endl;
 		cout << "Enter the choice " << endl;
 		cin >> choice;
 		getchar();
@@ -861,6 +869,9 @@ int main()
 			bookingroom();
 			break;
 		}
+		case 11:
+			showsummary();
+			break;
 		}
 	}
 }

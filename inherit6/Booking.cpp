@@ -40,6 +40,14 @@ void Booking::setbookingtime(string bookingtime)
 {
 	this->bookingtime = bookingtime;
 }
+string Booking::getcid()
+{
+	return customer.getcustomerid();
+}
+string Booking::getrid()
+{
+	return room.getroomid();
+}
 bool Booking::addamenities(amenities obj)
 {
 	bool flag = false;

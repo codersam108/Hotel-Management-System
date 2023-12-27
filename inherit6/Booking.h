@@ -18,6 +18,8 @@ public:
 	string getbookingdate();
 	string getbookingtime();
 	float gettotalprice();
+	string getcid();
+	string getrid();
 	void settotalprice(float totalprice);
 	void setbookingid(string bookingid);
 	void setbookingdate(string bookingdate);
