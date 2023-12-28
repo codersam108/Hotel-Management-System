@@ -981,10 +981,7 @@ void showsummary()
 int main()
 {
 	int choice;
-	readdataforcustomer();
-	readdataforroom();
-	readdataforamenities();
-	readdataforbooking();
+	
 	while (true)
 	{
 		cout << "***** Welcome to Hotel Management System******* " << endl;
@@ -1056,8 +1053,15 @@ int main()
 			break;
 		}
 		case 11:
+{
 			showsummary();
 			break;
 		}
 	}
+
+readdataforcustomer();
+	readdataforroom();
+	readdataforamenities();
+	readdataforbooking();}
+}
 }
