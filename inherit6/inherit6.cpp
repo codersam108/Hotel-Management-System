@@ -115,7 +115,7 @@ vector<Room>readdataforroom()
 			}
 			getline(fr, roomfeatures);
 			getline(fr, roomdescription);
-			cin >> price;
+			fr >> price;
 			Room obj(roomid, roomfeatures, roomdescription, price);
 			roomlist.push_back(obj);
 		}
@@ -127,7 +127,7 @@ vector<amenities>readdataforamenities()
 {
 	vector<amenities>amenitieslist;
 	ifstream fr("Amenitieslist.txt", ios::in);
-	if (!fr.eof())
+	if (!fr)
 	{
 		cout << "Sorry file not found" << endl;
 	}
@@ -982,6 +982,9 @@ int main()
 {
 	int choice;
 	
+	
+	
+	
 	while (true)
 	{
 		cout << "***** Welcome to Hotel Management System******* " << endl;
@@ -1004,64 +1007,71 @@ int main()
 		case 1:
 		{
 			addcustomer();
+			readdataforcustomer();
 			break;
 		}
 		case 2:
 		{
 			addroom();
+			readdataforroom();
 			break;
 		}
 		case 3:
 		{
 			addamenities();
+			readdataforamenities();
 			break;
 		}
 		case 4:
 		{
 			editcustomer();
+			readdataforcustomer();
 			break;
 		}
 		case 5:
 		{
 			editroom();
+			readdataforroom();
 			break;
 
 		}
 		case 6:
 		{
 			editamenities();
+			readdataforamenities();
 			break;
 		}
 		case 7:
 		{
 			deletecustomer();
+			readdataforcustomer();
 			break;
 		}
 		case 8:
 		{
 			deleteroom();
+			readdataforroom();
 			break;
 		}
 		case 9:
 		{
 			deleteamenities();
+			readdataforamenities();
 			break;
 		}
 		case 10:
 		{
 			bookingroom();
+			readdataforbooking();
 			break;
 		}
 		case 11:
-{
+		{
 			showsummary();
 			break;
 		}
-	}
+		}
 
-readdataforcustomer();
-	readdataforroom();
-	readdataforamenities();
-	readdataforbooking();}
+	}
 }
-}
+
