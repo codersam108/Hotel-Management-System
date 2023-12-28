@@ -25,6 +25,7 @@ string Customer::getstatus()
 {
 	return this->status;
 }
+
 void Customer::setcustomerid(string customerid)
 {
 	this->customerid = customerid;

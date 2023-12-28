@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include"amenities.h"
 #include"Booking.h"
@@ -9,10 +10,181 @@ using namespace std;
 int x;
 vector<Booking>bookinglist;
 vector<Customer>customerlist;
-vector<Customer>reservedcustomers;
 vector<Room>roomlist;
 vector<amenities>amenitieslist;
+vector<Customer>readdataforcustomer();
+vector<Room>readdataforroom();
+vector<amenities>readdataforamenities();
+vector<Booking>readdataforbooking();
 int index1, index2;
+void writedataforcustomer()
+{
+	ofstream fw("Customerdetails.txt", ios::out |ios::app);
+	for (x = 0; x < customerlist.size(); x++)
+	{
+		fw << customerlist[x].getcustomername() << endl;
+		fw << customerlist[x].getcustomerid() << endl;
+		fw << customerlist[x].getstatus() << endl;
+	}
+	fw.close();
+	
+}
+void writedataforroom()
+{
+	ofstream fw("Roomdetails.txt", ios::out |ios::app);
+	for (x = 0; x < roomlist.size(); x++)
+	{
+		fw << roomlist[x].getroomid() << endl;
+		fw << roomlist[x].getroomfeatures() << endl;
+		fw << roomlist[x].getroomdescription() << endl;
+		fw << roomlist[x].getprice() << endl;
+	}
+	fw.close();
+}
+void writedataforamenities()
+{
+	ofstream fw("Amenitieslist.txt", ios::app |ios::out);
+	for (x = 0; x < amenitieslist.size(); x++)
+	{
+		fw << amenitieslist[x].getid() << endl;
+		fw << amenitieslist[x].getname() << endl;
+		fw << amenitieslist[x].getdescription() << endl;
+		fw << amenitieslist[x].getprice() << endl;
+	}
+	fw.close();
+}
+void writedataforbooking()
+{
+	ofstream fw("Bookingdetails.txt", ios::app | ios::out);
+	for (x = 0; x < bookinglist.size(); x++)
+	{
+		fw << bookinglist[x].getbookingid() << endl;
+		fw << bookinglist[x].getbookingdate() << endl;
+		fw << bookinglist[x].getbookingtime() << endl;
+		fw << bookinglist[x].getcid() << endl;
+		fw << bookinglist[x].getrid() << endl;
+		fw << bookinglist[x].gettotalprice() << endl;
+	}
+	fw.close();
+}
+vector<Customer>readdataforcustomer()
+{
+	vector<Customer>customerlist;
+	ifstream fr("Customerdetails.txt", ios::in);
+	if (!fr)
+	{
+		cout << "File not found " << endl;
+	}
+	else
+	{
+		while (!fr.eof())
+		{
+			string customerid, status, customername;
+			getline(fr, customername);
+			if (customername.empty())
+			{
+				break;
+			}
+			getline(fr, customerid);
+			getline(fr, status);
+			Customer obj(customerid, customername, status);
+			customerlist.push_back(obj);
+		}
+		return customerlist;
+	}
+	fr.close();
+}
+vector<Room>readdataforroom()
+{
+	vector<Room>roomlist;
+	ifstream fr("Roomdetails.txt", ios::in);
+	if (!fr)
+	{
+		cout << "Sorry file not found " << endl;
+	}
+	else
+	{
+		while (!fr.eof())
+		{
+			string roomid, roomfeatures, roomdescription;
+			float price;
+			getline(fr, roomid);
+			if (roomid.empty())
+			{
+				break;
+			}
+			getline(fr, roomfeatures);
+			getline(fr, roomdescription);
+			cin >> price;
+			Room obj(roomid, roomfeatures, roomdescription, price);
+			roomlist.push_back(obj);
+		}
+		return roomlist;
+	}
+	fr.close();
+}
+vector<amenities>readdataforamenities()
+{
+	vector<amenities>amenitieslist;
+	ifstream fr("Amenitieslist.txt", ios::in);
+	if (!fr.eof())
+	{
+		cout << "Sorry file not found" << endl;
+	}
+	else
+	{
+		while (!fr.eof())
+		{
+			string id, name, description;
+			float price;
+			getline(fr, id);
+			getline(fr, name);
+			if (name.empty())
+			{
+				break;
+			}
+			getline(fr, description);
+			fr >> price;
+			amenities obj(id, name, description, price);
+			amenitieslist.push_back(obj);
+		}
+		return amenitieslist;
+	}
+	fr.close();
+}
+vector<Booking>readdataforbooking()
+{
+	vector<Booking>bookinglist;
+	ifstream fr("Bookingdetails.txt", ios::in);
+	if (!fr)
+	{
+		cout << "Sorry file not found " << endl;
+	}
+	else
+	{
+		while (!fr.eof())
+		{
+			string bookingid, bookingdate, bookingtime;
+			float totalprice;
+			Customer customer;
+			Room room;
+			getline(fr, bookingid);
+			getline(fr, bookingdate);
+			getline(fr, bookingtime);
+			string id;
+			id = customer.getcustomerid();
+			getline(fr, id);
+			string idd;
+			idd = room.getroomid();
+			getline(fr, idd);
+			fr >> totalprice;
+			Booking obj(customer,room, bookingid, bookingdate, bookingtime);
+			bookinglist.push_back(obj);
+		}
+		return bookinglist;
+	}
+	fr.close();
+}
 bool checkid(string ci)
 {
 	bool flag = false;
@@ -92,6 +264,7 @@ void addcustomer()
 	}
 	Customer obj(ci, cn, st);
 	customerlist.push_back(obj);
+	writedataforcustomer();
 	cout << "Customer added successfully" << endl;
 }
 void editcustomer()
@@ -162,6 +335,7 @@ void editcustomer()
 		}
 		Customer obje(cn, findid, st);
 		customerlist[idx] = obje;
+		writedataforcustomer();
 		cout << "Customer details edited successfully" << endl;
 	}
 	
@@ -189,6 +363,7 @@ void deletecustomer()
 	else
 	{
 		customerlist.erase(customerlist.begin() + idx);
+		writedataforcustomer();
 		cout << "Customer deleted success from the database " << endl;
 	}
 }
@@ -255,6 +430,7 @@ void addroom()
 	}
 	Room obj1(ri, rf, rd, pr);
 	roomlist.push_back(obj1);
+	writedataforroom();
 	cout << "Room added successfully" << endl;
 }
 void editroom()
@@ -340,6 +516,7 @@ void editroom()
 		}
 		Room obj2(ri, rf, rd, pr);
 		roomlist[idx] = obj2;
+		writedataforroom();
 		cout << "Room details edited successfully" << endl;
 	}
 }
@@ -368,6 +545,7 @@ void deleteroom()
 	else
 	{
 		roomlist.erase(roomlist.begin() + idx);
+		writedataforroom();
 		cout << "Room Successfully deleted from the database " << endl;
 	}
 }
@@ -448,6 +626,7 @@ void addamenities()
 	}
 	amenities object(amenitiesid, amenitiesname, amenitiesdescription, amenitiesprice);
 	amenitieslist.push_back(object);
+	writedataforamenities();
 	cout << "Amenity added successfully in the database" << endl;
 }
 void editamenities()
@@ -530,6 +709,7 @@ void editamenities()
 		}
 		amenities object(findid, amenitiesname, amenitiesdescription, amenitiesprice);
 		amenitieslist[idx] = object;
+		writedataforamenities();
 		cout << "Amenity edited successfully in the database" << endl;
 	}
 }
@@ -557,6 +737,7 @@ void deleteamenities()
 	else
 	{
 		amenitieslist.erase(amenitieslist.begin() + idx);
+		writedataforamenities();
 		cout << "Amenity successfully deleted from the database" << endl;
 	}
 
@@ -676,6 +857,7 @@ void bookingroom()
 	}
 	Booking obj(customerlist[index1], roomlist[index2], bid, bd, bt);
 	bookinglist.push_back(obj);
+	writedataforbooking();
 	while (true)
 	{
 		string yes;
@@ -799,6 +981,10 @@ void showsummary()
 int main()
 {
 	int choice;
+	readdataforcustomer();
+	readdataforroom();
+	readdataforamenities();
+	readdataforbooking();
 	while (true)
 	{
 		cout << "***** Welcome to Hotel Management System******* " << endl;

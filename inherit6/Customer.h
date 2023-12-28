@@ -12,6 +12,7 @@ public:
 	string getcustomerid();
 	string getcustomername();
 	string getstatus();
+	
 	void setcustomerid(string customerid);
 	void setcustomername(string customername);
 	void setstatus(string status);
