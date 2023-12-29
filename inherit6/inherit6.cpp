@@ -857,7 +857,7 @@ void bookingroom()
 	}
 	Booking obj(customerlist[index1], roomlist[index2], bid, bd, bt);
 	bookinglist.push_back(obj);
-	writedataforbooking();
+	
 	while (true)
 	{
 		string yes;
@@ -975,7 +975,7 @@ void showsummary()
 		cout << "The id of the room which the customer booked is " << bookinglist[idx].getrid() << endl;
 		bookinglist[idx].totalmoney();
 		cout << "The total fare for the customer is " << bookinglist[idx].gettotalprice() << endl;
-		
+		writedataforbooking();
 	}
 }
 int main()
